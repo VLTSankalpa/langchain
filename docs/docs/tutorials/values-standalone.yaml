@@ -1,0 +1,104 @@
+# values-standalone.yaml
+
+# First, we disable cluster mode and enable standalone
+cluster:
+  enabled: false
+
+# Configure the standalone deployment
+standalone:
+  enabled: true
+  replicas: 1  # Only one replica needed for standalone
+  resources:
+    requests:
+      cpu: "1"
+      memory: "4Gi"  # Sufficient for 15K vectors
+    limits:
+      cpu: "2"
+      memory: "8Gi"
+  messageQueue: rocksmq  # Use RocksDB for message queue instead of Pulsar
+  persistence:
+    enabled: true
+    size: "20Gi"  # Sufficient for your dataset
+    
+# Configure etcd - needed even in standalone mode
+etcd:
+  enabled: true
+  replicaCount: 1  # Only one replica needed for standalone
+  resources:
+    requests:
+      memory: "512Mi"
+      cpu: "200m"
+    limits:
+      memory: "1Gi"
+      cpu: "500m"
+  persistence:
+    enabled: true
+    size: "2Gi"  # Reduced size since it's just metadata
+
+# Configure MinIO for storage
+minio:
+  enabled: true
+  mode: standalone  # Switch to standalone mode
+  replicas: 1      # Only one replica needed
+  resources:
+    requests:
+      memory: "1Gi"
+      cpu: "200m"
+    limits:
+      memory: "2Gi"
+      cpu: "500m"
+  persistence:
+    enabled: true
+    size: "20Gi"  # Sufficient for your dataset
+
+# Disable Pulsar since we're using RocksDB
+pulsar:
+  enabled: false
+pulsarv3:
+  enabled: false
+
+# Disable all distributed components
+mixCoordinator:
+  enabled: false
+rootCoordinator:
+  enabled: false
+queryCoordinator:
+  enabled: false
+indexCoordinator:
+  enabled: false
+dataCoordinator:
+  enabled: false
+queryNode:
+  enabled: false
+indexNode:
+  enabled: false
+dataNode:
+  enabled: false
+proxy:
+  enabled: false
+
+# Configure the main service
+service:
+  type: ClusterIP
+  port: 19530
+
+# Configure metrics for monitoring (optional but recommended)
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: false  # Set to true if you have Prometheus operator
+
+# Basic probes configuration
+livenessProbe:
+  enabled: true
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 10
+  failureThreshold: 3
+
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 30
+  periodSeconds: 15
+  timeoutSeconds: 10
+  failureThreshold: 3
