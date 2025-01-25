@@ -5,3 +5,28 @@ node_modules/
 .docusaurus
 .cache-loader
 docs/api
+.env
+
+# Python virtual environment
+.venv/
+venv/
+
+# Poetry
+dist/
+*.egg-info/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# VS Code settings
+.vscode/
+
+# System files
+.DS_Store
+Thumbs.db
