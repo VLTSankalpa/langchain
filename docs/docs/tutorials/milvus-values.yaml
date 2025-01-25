@@ -1,0 +1,30 @@
+cluster:
+  enabled: true  # We want cluster mode for production
+standalone:
+  replicas: 1
+proxy:
+  replicas: 1
+queryNode:
+  replicas: 1
+dataNode:
+  replicas: 1
+indexNode:
+  replicas: 1
+etcd:
+  replicaCount: 3
+  resources:
+    requests:
+      memory: "2Gi"
+      cpu: "500m"
+minio:
+  resources:
+    requests:
+      memory: "4Gi"
+      cpu: "500m"
+  persistence:
+    size: 20Gi
+pulsar:
+  resources:
+    requests:
+      memory: "4Gi"
+      cpu: "500m"
